@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace AdoWPF
 {
@@ -13,5 +7,10 @@ namespace AdoWPF
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            string connectionString = @"server=(localdb)\mssqllocaldb;database=Bieren;integrated security=true";
+            Application.Current.Properties["Bieren2"] = connectionString;
+        }
     }
 }
