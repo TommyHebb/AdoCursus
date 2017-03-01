@@ -33,5 +33,18 @@ namespace AdoWPF
                 labelStatus.Content = ex.Message;
             }
         }
+
+        private void ButtonBonus_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var manager = new RekeningenManager();
+                labelStatus.Content = manager.SaldoBonus() + " rekeningen aangepast";
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Content = ex.Message;
+            }
+        }
     }
 }
