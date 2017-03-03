@@ -4,11 +4,11 @@ using AdoOefeningenGemeenschap;
 namespace AdoOpgave2
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for WPFOpgave2.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class WPFOpgave2 : Window
     {
-        public MainWindow()
+        public WPFOpgave2()
         {
             InitializeComponent();
         }
@@ -16,16 +16,15 @@ namespace AdoOpgave2
         {
             try
             {
-                var manager = new PlantenDbManager();
-                using (var conPlanten = manager.GetConnection())
+                using (var conTuin = new TuinDbManager().GetConnection())
                 {
-                    conPlanten.Open();
-                    Resultaat.Content = "Planten geopend";
+                    conTuin.Open();
+                    labelStatus.Content = "Tuincentrum geopend";
                 }
             }
             catch (Exception ex)
             {
-                Resultaat.Content = ex.Message;
+                labelStatus.Content = ex.Message;
             }
         }
     }

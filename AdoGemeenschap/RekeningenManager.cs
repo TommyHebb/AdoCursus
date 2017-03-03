@@ -43,5 +43,56 @@ namespace AdoGemeenschap
                 }
             }
         }
+        public void Overschrijven(Decimal bedrag, String vanRekening, String naarRekening)
+        {
+            using (var conBank = new BankDbManager().GetConnection())
+            {
+                conBank.Open();
+                using (var traOverschrijven = conBank.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    using (var comAftrekken = conBank.CreateCommand())
+                    {
+                        comAftrekken.Transaction = traOverschrijven;
+                        comAftrekken.CommandType = CommandType.Text;
+                        comAftrekken.CommandText = 
+                            "update Rekeningen set Saldo=Saldo-@bedrag where RekeningNr = @reknr";
+                        var parBedrag = comAftrekken.CreateParameter();
+                        parBedrag.ParameterName = "@bedrag";
+                        parBedrag.Value = bedrag;
+                        comAftrekken.Parameters.Add(parBedrag);
+                        var parRekNr = comAftrekken.CreateParameter();
+                        parRekNr.ParameterName = "@reknr";
+                        parRekNr.Value = vanRekening;
+                        comAftrekken.Parameters.Add(parRekNr);
+                        if (comAftrekken.ExecuteNonQuery() == 0)
+                        {
+                            traOverschrijven.Rollback();
+                            throw new Exception("Van rekening bestaat niet");
+                        }
+                    } // using comAftrekken
+                    using (var comBijtellen = conBank.CreateCommand())
+                    {
+                        comBijtellen.Transaction = traOverschrijven;
+                        comBijtellen.CommandType = CommandType.Text;
+                        comBijtellen.CommandText = 
+                            "update Rekeningen set Saldo = Saldo + @bedrag where RekeningNr = @reknr";
+                        var parBedrag = comBijtellen.CreateParameter();
+                        parBedrag.ParameterName = "@bedrag";
+                        parBedrag.Value = bedrag;
+                        comBijtellen.Parameters.Add(parBedrag);
+                        var parRekNr = comBijtellen.CreateParameter();
+                        parRekNr.ParameterName = "@reknr";
+                        parRekNr.Value = naarRekening;
+                        comBijtellen.Parameters.Add(parRekNr);
+                        if (comBijtellen.ExecuteNonQuery() == 0)
+                        {
+                            traOverschrijven.Rollback();
+                            throw new Exception("Naar rekening bestaat niet");
+                        }
+                    } // using comBijtellen
+                    traOverschrijven.Commit();
+                } // using traOverschrijven
+            } // using conBank
+        }
     }
 }

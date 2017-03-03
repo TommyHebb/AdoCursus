@@ -1,0 +1,35 @@
+﻿<Window x:Class="AdoOpgave2.WPFOpgave3"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AdoOpgave2"
+        mc:Ignorable="d"
+        Title="WPFOpgave3" Height="300" Width="300">
+    <Grid>
+        <Label Content="Naam:" HorizontalAlignment="Left" VerticalAlignment="Top" 
+               Width="70" Height="25" Margin="40,50,0,0"></Label>
+        <TextBox Name="textBoxNaam" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Width="150" Height="25" Margin="120,50,0,0"></TextBox>
+        <Label Content="Adres:" HorizontalAlignment="Left" VerticalAlignment="Top" 
+               Width="70" Height="25" Margin="40,80,0,0"></Label>
+        <TextBox Name="textBoxAdres" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Width="150" Height="25" Margin="120,80,0,0"></TextBox>
+        <Label Content="Postcode:" HorizontalAlignment="Left" VerticalAlignment="Top" 
+               Width="70" Height="25" Margin="40,110,0,0"></Label>
+        <TextBox Name="textBoxPostcode" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Width="150" Height="25" Margin="120,110,0,0"></TextBox>
+        <Label Content="Plaats:" HorizontalAlignment="Left" VerticalAlignment="Top" 
+               Width="70" Height="25" Margin="40,140,0,0"></Label>
+        <TextBox Name="textBoxPlaats" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                 Width="150" Height="25" Margin="120,140,0,0"></TextBox>
+        <Button Name="buttonToevoegen" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                Width="70" Height="25" Margin="40,190,0,0" Content="Toevoegen" 
+                Click="buttonToevoegen_Click"></Button>
+        <Button Name="buttonEindejaarskorting" HorizontalAlignment="Left" VerticalAlignment="Top"
+                Width="150" Height="25" Margin="120,190,0,0" Content="Eindejaarskorting" 
+                Click="buttonEindejaarskorting_Click"></Button>
+        <Label Name="labelStatus" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" 
+               Width="230" Height="25" Margin="40,220,0,0" HorizontalContentAlignment="Center"></Label>
+    </Grid>
+</Window>
