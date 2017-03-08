@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 
 namespace AdoOefeningenGemeenschap
 {
@@ -43,6 +44,54 @@ namespace AdoOefeningenGemeenschap
                     comKorting.CommandText = "EindejaarsKorting";
                     conTuin.Open();
                     return comKorting.ExecuteNonQuery();
+                }
+            }
+        }
+        public void VervangLeverancier(int oudLevNr, int nieuwLevNr)
+        {
+            var manager = new TuinDbManager();
+            using (var conTuin = manager.GetConnection())
+            {
+                conTuin.Open();
+                using (var traVervangen = conTuin.BeginTransaction(IsolationLevel.ReadCommitted))
+                {
+                    using (var comWijzigen = conTuin.CreateCommand())
+                    {
+                        comWijzigen.Transaction = traVervangen;
+                        comWijzigen.CommandType = CommandType.StoredProcedure;
+                        comWijzigen.CommandText = "LeverancierWijzigen";
+                        var parOudLevNr = comWijzigen.CreateParameter();
+                        parOudLevNr.ParameterName = "@OudLevNr";
+                        parOudLevNr.Value = oudLevNr;
+                        comWijzigen.Parameters.Add(parOudLevNr);
+                        var parNieuwLevNr = comWijzigen.CreateParameter();
+                        parNieuwLevNr.ParameterName = "@NieuwLevNr";
+                        parNieuwLevNr.Value = nieuwLevNr;
+                        comWijzigen.Parameters.Add(parNieuwLevNr);
+                        if (comWijzigen.ExecuteNonQuery() == 0)
+                        {
+                            traVervangen.Rollback();
+                            throw new Exception("Leverancier " + oudLevNr + 
+                                " kon niet vervangen worden door " + nieuwLevNr);
+                        }
+                    }
+                    using (var comVerwijderen = conTuin.CreateCommand())
+                    {
+                        comVerwijderen.Transaction = traVervangen;
+                        comVerwijderen.CommandType = CommandType.StoredProcedure;
+                        comVerwijderen.CommandText = "LeverancierVerwijderen";
+                        var parLevNr = comVerwijderen.CreateParameter();
+                        parLevNr.ParameterName = "@LevNr";
+                        parLevNr.Value = oudLevNr;
+                        comVerwijderen.Parameters.Add(parLevNr);
+                        if (comVerwijderen.ExecuteNonQuery() == 0)
+                        {
+                            traVervangen.Rollback();
+                            throw new Exception("Leverancier " + oudLevNr + 
+                                " kon niet verwijderd worden");
+                        }
+                        traVervangen.Commit();
+                    }
                 }
             }
         }

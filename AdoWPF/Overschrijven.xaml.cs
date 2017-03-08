@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdoGemeenschap;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,28 @@ namespace AdoWPF
         public Overschrijven()
         {
             InitializeComponent();
+        }
+
+        private void buttonOverschrijven_Click(object sender, RoutedEventArgs e)
+        {
+            Decimal bedrag;
+            if (Decimal.TryParse(textBoxBedrag.Text, out bedrag))
+            {
+                try
+                {
+                    var manager = new RekeningenManager();
+                    manager.Overschrijven(bedrag, textBoxVanRekNr.Text, textBoxNaarRekNr.Text);
+                    labelStatus.Content = "OK";
+                }
+                catch (Exception ex)
+                {
+                    labelStatus.Content = ex.Message;
+                }
+            }
+            else
+            {
+                labelStatus.Content = "Bedrag bevat geen getal";
+            }
         }
     }
 }

@@ -7,6 +7,22 @@
         mc:Ignorable="d"
         Title="Overschrijven" Height="300" Width="300">
     <Grid>
-        
+        <Label Content="Van Rekening Nr.:" Width="120" Height="30" Margin="50,50,0,0" 
+               HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+        <Label Content="Naar Rekening Nr.:" Width="120" Height="30" Margin="50,90,0,0"
+               HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+        <Label Content="Bedrag:" Width="120" Height="30" Margin="50,130,0,0"
+               HorizontalAlignment="Left" VerticalAlignment="Top"></Label>
+        <TextBox Name="textBoxVanRekNr" Width="100" Height="30" Margin="0,50,20,0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top"></TextBox>
+        <TextBox Name="textBoxNaarRekNr" Width="100" Height="30" Margin="0,90,20,0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top"></TextBox>
+        <TextBox Name="textBoxBedrag" Width="100" Height="30" Margin="0,130,20,0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top" HorizontalContentAlignment="Right"></TextBox>
+        <Button Name="buttonOverschrijven" Width="100" Height="30" Margin="0,170,20,0"
+                Content="Overschrijven" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                Click="buttonOverschrijven_Click"></Button>
+        <Label Name="labelStatus" Content="" Width="220" Height="30" Margin="50,210,0,0"
+               HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Center"></Label>
     </Grid>
 </Window>
