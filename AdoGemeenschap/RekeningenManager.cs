@@ -99,5 +99,31 @@ namespace AdoGemeenschap
                 } // using conBank
             } // using traOverschrijven
         }
+        public decimal SaldoRekeningRaadplegen(String rekeningNr)
+        {
+            var dbManager = new BankDbManager();
+            using (var conBank = dbManager.GetConnection())
+            {
+                using (var comSaldo = conBank.CreateCommand())
+                {
+                    comSaldo.CommandType = CommandType.StoredProcedure;
+                    comSaldo.CommandText = "SaldoRekeningRaadplegen";
+                    var parRekNr = comSaldo.CreateParameter();
+                    parRekNr.ParameterName = "@rekeningNr";
+                    parRekNr.Value = rekeningNr;
+                    comSaldo.Parameters.Add(parRekNr);
+                    conBank.Open();
+                    Object resultaat = comSaldo.ExecuteScalar();
+                    if (resultaat == null)
+                    {
+                        throw new Exception("Rekening bestaat niet");
+                    }
+                    else
+                    {
+                        return (decimal)resultaat;
+                    }
+                }
+            }
+        }
     }
 }

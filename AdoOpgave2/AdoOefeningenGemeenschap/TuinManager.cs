@@ -95,5 +95,31 @@ namespace AdoOefeningenGemeenschap
                 }
             }
         }
+        public decimal GemiddeldePrijsVanEenSoort(string soort)
+        {
+            var manager = new TuinDbManager();
+            using (var conTuin = manager.GetConnection())
+            {
+                using (var comGemiddelde = conTuin.CreateCommand())
+                {
+                    comGemiddelde.CommandType = CommandType.StoredProcedure;
+                    comGemiddelde.CommandText = "GemiddeldePrijsVanEenSoort";
+                    var parSoort = comGemiddelde.CreateParameter();
+                    parSoort.ParameterName = "@soort";
+                    parSoort.Value = soort;
+                    comGemiddelde.Parameters.Add(parSoort);
+                    conTuin.Open();
+                    var resultaat = comGemiddelde.ExecuteScalar();
+                    if (resultaat == DBNull.Value)
+                    {
+                        throw new Exception("Soort bestaat niet");
+                    }
+                    else
+                    {
+                        return (decimal)resultaat;
+                    }
+                }
+            }
+        }
     }
 }
